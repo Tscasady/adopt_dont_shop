@@ -53,7 +53,7 @@ RSpec.describe 'The pet application show page' do
 
     it 'can display Pets based on a search query' do
       
-      fill_in(:query, with: "Mr. Pirate")
+      fill_in(:search, with: "Mr. Pirate")
       click_button "Search"
 
       expect(current_path).to eq "/applications/#{@app1.id}"
@@ -67,7 +67,7 @@ RSpec.describe 'The pet application show page' do
 
     it 'can display Pets whose names are a close match' do
 
-      fill_in(:query, with: "age")
+      fill_in(:search, with: "age")
       click_button "Search"
       
       expect(current_path).to eq "/applications/#{@app1.id}"
@@ -80,7 +80,7 @@ RSpec.describe 'The pet application show page' do
 
     it 'can display Pets whose names match a case insensitive search' do
 
-      fill_in(:query, with: "aGE")
+      fill_in(:search, with: "aGE")
       click_button "Search"
       
       expect(current_path).to eq "/applications/#{@app1.id}"
