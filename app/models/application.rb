@@ -6,6 +6,5 @@ class Application < ApplicationRecord
   validates_presence_of :name,:street_address,:city,:state
   validates_presence_of  :status, inclusion: ["In Progress","Pending","Accepted","Rejected" ]
   validates_numericality_of :zip_code
-  
 
 end
