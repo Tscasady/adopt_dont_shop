@@ -79,12 +79,12 @@ RSpec.describe 'New Applications Page' do
           fill_in(:state, with: '')
           fill_in(:zip_code, with: 54321)
           fill_in(:description, with: "I aint got a friend for days")
+
           
           click_button ("Submit")
-          
           @new_app = Application.last
           expect(@new_app.nil?).to eq true
-
+                    
           expect(page).to have_content("Please Complete This Application")
           expect(page).to have_content('Unsuccessful - Please Try Again')
           expect(page).to have_field(:name, with: 'Song Sung Blue')
@@ -104,35 +104,24 @@ RSpec.describe 'New Applications Page' do
           fill_in(:zip_code, with: 54321)
           fill_in(:description, with: 'I aint got a friend for days')
           click_button ("Submit")
-          
           @new_app = Application.last
         end
 
         it "saves the completed application show page once the submit link is clicked" do
-          
           expect(@new_app.nil?).to eq false
           expect(@new_app.save).to eq true
+          expect(@new_app.status).to eq("In Progress")
           expect(@new_app.name).to eq('Song Sung Blue')
           expect(@new_app.street_address).to eq('99 Dead End Drive')
           expect(@new_app.city).to eq('Hopeless')
           expect(@new_app.state).to eq('CO')
           expect(@new_app.zip_code).to eq(54321)          
           expect(@new_app.description).to eq('I aint got a friend for days')
+
+          expect(current_path).to_not eq(pets_path)
+          expect(current_path).to_not eq(applications_new_path)
+          expect(current_path).to eq("/applications/#{@new_app.id}")
         end
-        
-        # it "displays all the information the user completed, status 'in progress', and a 'Successful' message on the application's show page" do
-        #   expect(current_path).to_not eq(pets_path)
-        #   expect(current_path).to_not eq(applications_new_path)
-        #   expect(current_path).to eq("/applications/#{@new_app.id}")
-        #   save_and_open_page
-        #   expect(page).to have_content('Update Successful')
-        #   expect(page).to have_content('Song Sung Blue')
-        #   expect(page).to have_content('99 Dead End Drive')
-        #   expect(page).to have_content('Hopeless')
-        #   expect(page).to have_content('CO')
-        #   expect(page).to have_content(54321)          
-        #   expect(page).to have_content('I aint got a friend for days')
-        # end
       end
     end
   end
