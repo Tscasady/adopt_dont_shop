@@ -1,6 +1,5 @@
 <h2>Please Complete This Application</h2>
 
-
 <%= form_with url: "/applications/#{@new_application.id}", method: :post, local: true do |form| %>
   <ul><%= form.label :name, "Name"%>
   <%= form.text_field :name, value: @new_application.name %></ul>
