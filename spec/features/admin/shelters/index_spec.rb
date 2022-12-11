@@ -8,7 +8,7 @@ RSpec.describe 'The admin shelters index page' do
 
     @pirate = @aurora.pets.create(name: 'Mr. Pirate', breed: 'tuxedo shorthair', age: 5, adoptable: true)
 
-    @app1 = Application.create!(name: "Tucker", street_address: "1122 Blank St.", city: 'New York City', state: "NY", zip_code: "12121", description: "We have one happy dog and would love another!", status: "In Progress") 
+    @app1 = Application.create!(name: "Tucker", street_address: "1122 Blank St.", city: 'New York City', state: "NY", zip_code: "12121", description: "We have one happy dog and would love another!", status: "Pending") 
     @petapp1 = PetApplication.create!(pet: @pirate, application: @app1)
 
     visit admin_shelters_path
@@ -17,15 +17,16 @@ RSpec.describe 'The admin shelters index page' do
   it 'has a section that lists all shelters by reverse alphabetical order' do
 
     within "#index_all" do
-      expect(@rgv).to appear_before (@fancy) 
-      expect(@fancy).to appear_before (@aurora) 
+      save_and_open_page
+      expect(@rgv.name).to appear_before (@fancy.name) 
+      expect(@fancy.name).to appear_before (@aurora.name) 
     end
   end
 
   it 'has a section that lists shelters with pending applications' do
-    within "#pending_apps" do
-      expect(page).to have_content(@aurora)
-      expect(page).to_not have_content(@rgv)
+    within "#pending_shelters" do
+      expect(page).to have_content(@aurora.name)
+      expect(page).to_not have_content(@rgv.name)
     end
   end
 end
