@@ -17,7 +17,6 @@ RSpec.describe 'The admin shelters index page' do
   it 'has a section that lists all shelters by reverse alphabetical order' do
 
     within "#index_all" do
-      save_and_open_page
       expect(@rgv.name).to appear_before (@fancy.name) 
       expect(@fancy.name).to appear_before (@aurora.name) 
     end

@@ -56,14 +56,18 @@ RSpec.describe 'The pet application show page' do
       end
     end
 
+    it 'does not display Add a Pet section if the application is not In Progress' do
+      visit "/applications/#{@app2.id}"
+      expect(page).to_not have_selector("#add_pet_to_app")
+    end
+
     it 'can display Pets based on a search query' do
       
       fill_in(:search, with: "Mr. Pirate")
       click_button "Search"
 
       expect(current_path).to eq "/applications/#{@app1.id}"
-      # save_and_open_page
-      #User story is unclear what information should be displayed upon searching.
+
       within("#add_pet_to_app") do 
         expect(page).to have_content @pirate.name
         expect(page).to_not have_content @sage.name
@@ -97,7 +101,7 @@ RSpec.describe 'The pet application show page' do
     end
   end
 
-  describe '5. Add a Pet to an Application' do
+  describe 'Add a Pet to an Application' do
     describe "page's search returns the names Pets that match my search" do
       describe "next to each Pet's name I see a button to 'Adopt this Pet' " do
         before(:each) do
