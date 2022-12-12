@@ -10,6 +10,9 @@
     <%= link_to "#{pet.name}", "/pets/#{pet.id}" %>
   <% end %>
   <p><%= "Application Status: #{@application.status}" %></p>
+    <% if @application.bid_reason.present? %>
+      <p><%= "good owner for these pet(s) because: #{@application.bid_reason}" %></p>
+    <% end %>
 </div>
 <br>
 
@@ -21,9 +24,9 @@
 <br>
 
 <% if  @application.pets.present? && @application.status == "In Progress" %>
-  <%= form_with url: "/applications/#{@application.id}", method: :post, local: true do |form| %>
-    <%= form.label :description, "Our home is perfect for pet(s) because..." %>
-    <%= form.text_field :description, value: @application.description  %>
+  <%= form_with url: "/applications/#{@application.id}", method: :patch, local: true do |form| %>
+    <%= form.label :bid_reason, "I would make a good owner for these pet(s) because..." %>
+    <%= form.text_field :bid_reason  %>
     <%= form.button "Submit Application" %>
   <% end %>
 <% end %>

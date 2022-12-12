@@ -9,7 +9,7 @@
     <% next if @application.pets.include?(pet)  %>
       <div id= "pet-search-result-<%= pet.id %>" >
       <%= pet.name %> 
-      <%= button_to "Adopt This Pet", "/pet_applications/?application_id=#{@application.id};pet_id=#{pet.id}", method: :post, local: :true %>
+      <%= button_to "Adopt This Pet", "/pet_applications/?application_id=#{@application.id}&pet_id=#{pet.id}", method: :post, local: :true %>
     </div>
     <br>
   <% end %>

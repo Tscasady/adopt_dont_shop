@@ -152,49 +152,79 @@ RSpec.describe 'The pet application show page' do
     end
   end
 
-  describe 'Submit an Application' do
+  describe 'Submit an Application & No Pets on an Application' do
     describe "when one or more pets have been added to an application and its status is 'In Progress' " do
       it 'if condition is true: has a section to submit my application, which has a test box user to add why they are a worthy candidate' do
         visit "/applications/#{@app4.id}"
     
         expect(@app4.pets.present?).to eq false
         expect(@app4.status).to eq('In Progress')
-        expect(page).to_not have_field(:description)
+        expect(page).to_not have_field(:bid_reason)
         expect(page).to_not have_button('Submit Application')
 
         visit "/applications/#{@app2.id}"
         
         expect(@app2.pets.present?).to eq true
         expect(@app2.status).to eq('Pending')
-        expect(page).to_not have_field(:description)
+        expect(page).to_not have_field(:bid_reason)
         expect(page).to_not have_button('Submit Application')
 
         visit "/applications/#{@app3.id}"
-        # save_and_open_page
+      
         expect(@app3.pets.present?).to eq true
         expect(@app3.status).to eq('In Progress')
-        expect(page).to have_field(:description)
+        expect(page).to have_field(:bid_reason)
         expect(page).to have_button('Submit Application')
-
       end
 
-      it 'returns user to the application show page after they click submit' do
+      describe 'when user completes the worthy candidate and clicks the submit button' do 
+        before(:each) do
           visit "/applications/#{@app3.id}"
-          # require 'pry';binding.pry
-          save_and_open_page
-          expect(@app3.pets.present?).to eq true
-          expect(@app3.pets.status).to eq('In Progress')
-          expect(page).to have_field(:description)
-              # And in that section I see an input to enter 
-              # When I fill in that input
-              # And I click a button to submit this application
+    
+          fill_in(:bid_reason, with: "I aint got a friend for days and love this dog A LOT, LOT")
+        end
+        
+        it 'returns user to the application show page after they click submit' do
+          
+          click_button('Submit Application')
 
-              # Then I am taken back to the application's show page
-              # And I see an indicator that the application is "Pending"
-              # And I see all the pets that I want to adopt
-              # And I do not see a section to add more pets to this application
+          expect(current_path).to_not eq("/pets")
+          expect(current_path).to eq("/applications/#{@app3.id}")
+        end
 
-   
+        it 'displays the worthy candidate reason on the show page once application is submitted' do          
+          click_button('Submit Application')
+          
+          expect(page).to have_content("I aint got a friend for days and love this dog A LOT, LOT")
+          expect(page).to have_content('Pending')
+        end
+        
+        it "updates the application status 'Pending' once an application is submitted" do
+          within("#show_data") do
+            expect(page).to_not have_content('Pending')  
+            expect(page).to have_content('In Progress')
+          end
+        
+          click_button('Submit Application')
+
+          expect(current_path).to eq("/applications/#{@app3.id}")
+          
+          within("#show_data") do
+          expect(page).to_not have_content('In Progress')
+            expect(page).to have_content('Pending')  
+          end
+        end 
+
+        it "updates the application status 'Pending' once an application is submitted" do
+          expect(page).to have_content ("Add a Pet to this Application")
+          expect(page).to have_button ("Search")
+
+          click_button('Submit Application')
+
+          expect(page).to_not have_content ("Add a Pet to this Application")
+          expect(page).to_not have_button ("Search")
+        end
+        
       end
     end
   end
