@@ -6,6 +6,11 @@
 
 <% if params[:search] %>
   <% @search_result.each do |pet| %>
-    <%= pet.name%><br>
+    <% next if @application.pets.include?(pet)  %>
+      <div id= "pet-search-result-<%= pet.id %>" >
+      <%= pet.name %> 
+      <%= button_to "Adopt This Pet", "/pet_applications/?application_id=#{@application.id};pet_id=#{pet.id}", method: :post, local: :true %>
+    </div>
+    <br>
   <% end %>
 <% end %>
