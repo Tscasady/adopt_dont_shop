@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   patch '/pets/:id', to: 'pets#update'
   delete '/pets/:id', to: 'pets#destroy'
 
+  post '/pet_applications', to: 'pet_applications#create'
+
   get '/veterinary_offices', to: 'veterinary_offices#index'
   get '/veterinary_offices/new', to: 'veterinary_offices#new'
   get '/veterinary_offices/:id', to: 'veterinary_offices#show'
