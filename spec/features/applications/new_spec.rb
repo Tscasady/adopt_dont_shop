@@ -56,7 +56,7 @@ RSpec.describe 'New Applications Page' do
         expect(page).to have_field(:city)
         expect(page).to have_field(:state)
         expect(page).to have_field(:zip_code)
-        expect(page).to have_field(:description)
+        # expect(page).to have_field(:description)
 
       end
 

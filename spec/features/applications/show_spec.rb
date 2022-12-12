@@ -14,7 +14,8 @@ RSpec.describe 'The pet application show page' do
     @app1 = Application.create!(name: "Tucker", street_address: "1122 Blank St.", city: 'New York City', state: "NY", zip_code: "12121", description: "We have one happy dog and would love another!", status: "In Progress") 
     @app2 = Application.create!(name: "Sara", street_address: "2211 Other St.", city: 'Iowa City', state: "IA", zip_code: "33434", description: "Give pet please", status: "Pending") 
     @app3 = Application.create!(name: "Joe", street_address: "2 Corner St.", city: 'Bolder', state: "CO", zip_code: "05728", description: "Need friends", status: "In Progress") 
-    
+    @app4 = Application.create!(name: "Smithers", street_address: "1 Prosperous Drive", city: 'Bolder', state: "CO", zip_code: "05728", description: "I need all the pets in the world", status: "In Progress") 
+
     @petapp1 = PetApplication.create!(pet: @coony, application: @app1)
     @petapp2 = PetApplication.create!(pet: @irishman, application: @app1)
     @petapp3 = PetApplication.create!(pet: @irishman, application: @app2)
@@ -150,4 +151,52 @@ RSpec.describe 'The pet application show page' do
       end
     end
   end
+
+  describe 'Submit an Application' do
+    describe "when one or more pets have been added to an application and its status is 'In Progress' " do
+      it 'if condition is true: has a section to submit my application, which has a test box user to add why they are a worthy candidate' do
+        visit "/applications/#{@app4.id}"
+    
+        expect(@app4.pets.present?).to eq false
+        expect(@app4.status).to eq('In Progress')
+        expect(page).to_not have_field(:description)
+        expect(page).to_not have_button('Submit Application')
+
+        visit "/applications/#{@app2.id}"
+        
+        expect(@app2.pets.present?).to eq true
+        expect(@app2.status).to eq('Pending')
+        expect(page).to_not have_field(:description)
+        expect(page).to_not have_button('Submit Application')
+
+        visit "/applications/#{@app3.id}"
+        # save_and_open_page
+        expect(@app3.pets.present?).to eq true
+        expect(@app3.status).to eq('In Progress')
+        expect(page).to have_field(:description)
+        expect(page).to have_button('Submit Application')
+
+      end
+
+      it 'returns user to the application show page after they click submit' do
+          visit "/applications/#{@app3.id}"
+          # require 'pry';binding.pry
+          save_and_open_page
+          expect(@app3.pets.present?).to eq true
+          expect(@app3.pets.status).to eq('In Progress')
+          expect(page).to have_field(:description)
+              # And in that section I see an input to enter 
+              # When I fill in that input
+              # And I click a button to submit this application
+
+              # Then I am taken back to the application's show page
+              # And I see an indicator that the application is "Pending"
+              # And I see all the pets that I want to adopt
+              # And I do not see a section to add more pets to this application
+
+   
+      end
+    end
+  end
+
 end
