@@ -3,8 +3,7 @@ require 'rails_helper'
 RSpec.describe Shelter, type: :model do
   describe 'relationships' do
     it { should have_many(:pets) }
-    it { should have_many(:pet_applications).through(:pets) }
-    it { should have_many(:applications).through(:pet_applications)}
+    it { should have_many(:applications).through(:pets)}
   end
 
   describe 'validations' do
