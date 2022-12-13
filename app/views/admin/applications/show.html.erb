@@ -7,26 +7,19 @@
   <p><%= "Description: #{@application.description}" %></p>
   <p><%= "Pets Applied for:" %></p>
   <% @application.pets.each do |pet| %>
-    <%= link_to "#{pet.name}", "/pets/#{pet.id}" %><br>
+    <div id="<%= pet.id %>">
+    <%= link_to "#{pet.name}", "/pets/#{pet.id}" %>
+    <%= button_to "Approve", "/pet_applications/?application_id=#{@application.id}&pet_id=#{pet.id}status=Approved", method: :patch%>
+    <%= button_to "Reject", "/pet_applications/?application_id=#{@application.id}&pet_id=#{pet.id}&status=Rejected", method: :patch%>
+    </div>
+    <br>
   <% end %>
   <p><%= "Application Status: #{@application.status}" %></p>
     <% if @application.bid_reason.present? %>
       <p><%= "good owner for these pet(s) because: #{@application.bid_reason}" %></p>
     <% end %>
 </div>
-<br>
 
-<% if @application.status == "In Progress" %> 
-  <div id="add_pet_to_app">
-    <%= render partial: "search", object: @application %>
-  </div>
-<% end %>
-<br>
 
-<% if  @application.pets.present? && @application.status == "In Progress" %>
-  <%= form_with url: "/applications/#{@application.id}", method: :patch, local: true do |form| %>
-    <%= form.label :bid_reason, "I would make a good owner for these pet(s) because..." %>
-    <%= form.text_field :bid_reason  %>
-    <%= form.button "Submit Application" %>
-  <% end %>
-<% end %>
+
+
