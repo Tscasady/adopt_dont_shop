@@ -1,0 +1,9 @@
+<h1>Admin Index</h1>
+
+<h3><%= link_to 'Admin Shelters', admin_shelters_path %></h3>
+
+<% @pet_applications.each do |app| %>
+  <h3>Applicant: <%= app.application.name %>, Pet: <%= app.pet.name %>, Shelter: <%= app.pet.shelter.name %></h3>
+  <%= link_to 'See Application', "/admin/applications/#{app.id}"%>
+<% end %>
+<br>
