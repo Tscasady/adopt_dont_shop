@@ -6,11 +6,15 @@
   <p><%= "Zip Code: #{@application.zip_code}" %></p>
   <p><%= "Description: #{@application.description}" %></p>
   <p><%= "Pets Applied for:" %></p>
-  <% @application.pets.each do |pet| %>
-    <div id="<%= pet.id %>">
-    <%= link_to "#{pet.name}", "/pets/#{pet.id}" %>
-    <%= button_to "Approve", "/pet_applications/?application_id=#{@application.id}&pet_id=#{pet.id}status=Approved", method: :patch%>
-    <%= button_to "Reject", "/pet_applications/?application_id=#{@application.id}&pet_id=#{pet.id}&status=Rejected", method: :patch%>
+  <% @petapps.each do |pet_app| %>
+    <div id="<%= pet_app.pet_id %>">
+    <%= link_to "#{pet_app.pet.name}", "/pets/#{pet_app.pet.id}" %>
+    <% if pet_app.status %>
+      <%= pet_app.status%>
+    <% else %>
+      <%= button_to "Approve", "/pet_applications/#{pet_app.id}?status=Approved", method: :patch%>
+      <%= button_to "Reject", "/pet_applications/#{pet_app.id}?status=Rejected", method: :patch%>
+    <% end %>
     </div>
     <br>
   <% end %>
