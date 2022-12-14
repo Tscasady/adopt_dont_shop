@@ -8,12 +8,12 @@ class Application < ApplicationRecord
   validates_numericality_of :zip_code
 
   after_update :update_adoptable, if: :accepted
-
-  private
   
   def app_status(verdict)
     self.pet_applications.where(status: verdict).count
   end
+
+  private
   
   def accepted
     self.status == "Accepted"
