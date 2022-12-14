@@ -14,6 +14,7 @@ class Pet < ApplicationRecord
   end
 
   def adopted
+    require 'pry';binding.pry
     self.update!(adoptable: false)
   end
 end

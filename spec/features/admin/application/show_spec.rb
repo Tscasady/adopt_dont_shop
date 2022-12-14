@@ -8,15 +8,17 @@ RSpec.describe 'The admin application show page' do
     @clawdia = @aurora.pets.create(name: 'Clawdia', breed: 'shorthair', age: 3, adoptable: true)
     @lucille = @aurora.pets.create(name: 'Lucille Bald', breed: 'sphynx', age: 8, adoptable: true)
 
-    @app1 = Application.create!(name: "Tucker", street_address: "1122 Blank St.", city: 'New York City', state: "NY", zip_code: "12121", description: "We have one happy dog and would love another!", status: "Pending") 
-    @app2 = Application.create!(name: "Sara", street_address: "2211 Other St.", city: 'Iowa City', state: "IA", zip_code: "33434", description: "Give pet please", status: "Pending") 
-      
+    @app1 = Application.create!(name: "Tucker", street_address: "1122 Blank St.", city: 'New York City', state: "NY", zip_code: "12121", description: "We have one happy dog and would love another!", status: "In Progress") 
+    @app2 = Application.create!(name: "Sara", street_address: "2211 Other St.", city: 'Iowa City', state: "IA", zip_code: "33434", description: "Give pet please", status: "In Progress") 
+    @app3 = Application.create!(name: "Joe", street_address: "2 Corner St.", city: 'Bolder', state: "CO", zip_code: "05728", description: "Need friends") 
+    
     @petapp1 = PetApplication.create!(pet: @pirate, application: @app1)
     @petapp2 = PetApplication.create!(pet: @clawdia, application: @app1)
     @petapp3 = PetApplication.create!(pet: @lucille, application: @app1)
     @petapp4 = PetApplication.create!(pet: @pirate, application: @app2)
     @petapp5 = PetApplication.create!(pet: @clawdia, application: @app2)
     @petapp6 = PetApplication.create!(pet: @lucille, application: @app2)
+    @petapp7 = PetApplication.create!(pet: @pirate, application: @app3)
   end
 
   it 'has buttons to approve or reject a pet' do
@@ -135,7 +137,33 @@ RSpec.describe 'The admin application show page' do
       expect(page).to_not have_content('Application Status: Approved')
       expect(page).to have_content('Application Status: Rejected')
     end
-
   end
+  
+  describe 'Pets can only have one approved application on them at any time' do
+    describe "'Pending' application with an adopted pet" do       
+      it 'displays a notice that the pet is adopted and a button to reject the pet' do 
+        visit "/admin/applications/#{@app3.id}"
+        within("##{@pirate.id}") do
+          click_button "Approve"
+          # save_and_open_page
+        end
+        visit "/admin/applications/#{@app1.id}"
+        # require 'pry';binding.pry
+        within("##{@pirate.id}") do
+          expect(page).to_not have_button("Approve")
+        
+          expect(page).to have_content("This pet is adopted")
+          expect(page).to have_button("Reject")
+        end
 
+        visit "/admin/applications/#{@app2.id}"
+        within("##{@pirate.id}") do
+          expect(page).to_not have_button("Approve")
+        
+          expect(page).to have_content("This pet is adopted")
+          expect(page).to have_button("Reject")
+        end
+      end
+    end
+  end
 end

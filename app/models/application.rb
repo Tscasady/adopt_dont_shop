@@ -20,6 +20,7 @@ class Application < ApplicationRecord
   end
 
   def update_adoptable
+    require 'pry';binding.pry
     self.pets.each(&:adopted)
   end
 end

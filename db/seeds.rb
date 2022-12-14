@@ -25,7 +25,7 @@ kaity = rgv.pets.create(name: 'Kaity', breed: 'Siamese', age: 8, adoptable: true
 bo = rgv.pets.create(name: 'Bo', breed: 'Borzoi', age: 4, adoptable: true)
 
 coony = fancy.pets.create(name: 'Coony', breed: 'Maine Coon', age: 10, adoptable: true)
-bloom = fancy.pets.create(name: 'Irishman', breed: 'irish wolfhound', age: 2, adoptable: true)
+irishman = fancy.pets.create(name: 'Irishman', breed: 'irish wolfhound', age: 2, adoptable: true)
 sage = fancy.pets.create(name: 'Sage', breed: 'irish wolfhound', age: 8, adoptable: true)
 
 special_friends = VeterinaryOffice.create(name: 'Special Friends', boarding_services: true, max_patient_capacity: 100)
@@ -46,5 +46,7 @@ victor = pet_er_room.veterinarians.create(name: 'Victor', on_call: true, review_
 mike = pet_er_room.veterinarians.create(name: 'Mike', on_call: false, review_rating: 6)
 
 #Applications
-app1 = Application.create!(name: "Tucker", street_address: "1122 Blank St.", city: 'New York City', state: "NY", zip_code: "12121", description: "We have one happy dog and would love another!", status: "In Progress") 
-app2 = Application.create!(name: "Sara", street_address: "2211 Other St.", city: 'Iowa City', state: "IA", zip_code: "33434", description: "Give pet please", status: "Pending") 
+app1 = Application.create!(name: "Tucker", street_address: "1122 Blank St.", city: 'New York City', state: "NY", zip_code: "12121", description: "We have one happy dog and would love another!") 
+app2 = Application.create!(name: "Sara", street_address: "2211 Other St.", city: 'Iowa City', state: "IA", zip_code: "33434", description: "Give pet please") 
+app3 = Application.create!(name: "Joe", street_address: "2 Corner St.", city: 'Bolder', state: "CO", zip_code: "05728", description: "Need friends") 
+app4 = Application.create!(name: "Smithers", street_address: "1 Prosperous Drive", city: 'Bolder', state: "CO", zip_code: "05728", description: "I need all the pets in the world") 
