@@ -15,7 +15,7 @@ class PetApplicationsController < ApplicationController
     if @application.app_status("Rejected") > 0
       @application.update(status: "Rejected")
     elsif @application.app_status("Approved") == @petapps.count
-      @application.update(status: "Approved")
+      @application.update(status: "Accepted")
     end
    redirect_to "/admin/applications/#{@petapp.application_id}"
   end

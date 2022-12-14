@@ -13,10 +13,10 @@ class ApplicationsController < ApplicationController
     @new_application = Application.new(app_params)
     
     if @new_application.save
-      flash.notice = 'Update Successful'
+      flash[:success] = 'Update Successful'
       redirect_to ("/applications/#{@new_application.id}")
     else
-      flash.notice = 'Unsuccessful - Please Try Again' #@new_application.errors.full_messages.to_sentence
+      flash[:alert] = @new_application.errors.full_messages.to_sentence #'Unsuccessful - Please Try Again' 
       render :new
     end
   end

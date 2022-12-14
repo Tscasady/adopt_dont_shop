@@ -65,7 +65,7 @@ RSpec.describe 'New Applications Page' do
           #state left blank intentionally for testing
 
           expect(page).to have_content("Please Complete This Application")
-          expect(page).to_not have_content('Unsuccessful - Please Try Again')
+          expect(page).to_not have_content("State can't be blank")
           expect(page).to_not have_field(:name, with: 'Song Sung Blue')
           expect(page).to_not have_field(:street_address, with: '99 Dead End Drive')
           expect(page).to_not have_field(:city,  with: 'Hopeless')
@@ -86,7 +86,10 @@ RSpec.describe 'New Applications Page' do
           expect(@new_app.nil?).to eq true
                     
           expect(page).to have_content("Please Complete This Application")
-          expect(page).to have_content('Unsuccessful - Please Try Again')
+          # expect(page).to have_content('Unsuccessful')
+          expect(page).to have_content("State can't be blank")
+          # expect(flash[:alert]).to be_present
+          # expect(controller).to set_flash([:alert])
           expect(page).to have_field(:name, with: 'Song Sung Blue')
           expect(page).to have_field(:street_address, with: '99 Dead End Drive')
           expect(page).to have_field(:city,  with: 'Hopeless')
