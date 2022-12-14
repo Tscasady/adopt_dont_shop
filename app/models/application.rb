@@ -9,11 +9,14 @@ class Application < ApplicationRecord
 
   after_update :update_adoptable, if: :accepted
 
-  def update_adoptable
-    self.pets.each(&:adopted)
-  end
+  private
 
   def accepted
     self.status == "Accepted"
   end
+
+  def update_adoptable
+    self.pets.each(&:adopted)
+  end
 end
+
