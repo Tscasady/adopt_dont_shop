@@ -40,7 +40,7 @@ RSpec.describe Application, type: :model do
       expect(Pet.find(@clawdia.id).adoptable).to eq(true)
       
       @application.update(status: "Accepted")
-      require 'pry'; binding.pry 
+      
       expect(Pet.find(@pirate.id).adoptable).to eq(false)
       expect(Pet.find(@clawdia.id).adoptable).to eq(false)
     end
