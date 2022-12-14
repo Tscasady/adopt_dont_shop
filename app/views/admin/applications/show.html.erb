@@ -9,12 +9,13 @@
   <% @petapps.each do |pet_app| %>
     <div id="<%= pet_app.pet_id %>">
       <%= link_to "#{pet_app.pet.name}", "/pets/#{pet_app.pet.id}" %>
-        
-        <% if !pet_app.pet.adoptable %>
+        <% if pet_app.application.status == 'Accepted' %>
+          <%= pet_app.status %>
+        <% elsif pet_app.status  %>
+          <%= pet_app.status %>
+        <% elsif !pet_app.pet.adoptable %>
           <%= "This pet is adopted"%>
           <%= button_to "Reject", "/pet_applications/#{pet_app.id}?status=Rejected", method: :patch%>
-        <% elsif pet_app.status  %>
-          <%= pet_app.status%>
         <% else %>
           <%= button_to "Approve", "/pet_applications/#{pet_app.id}?status=Approved", method: :patch%>
           <%= button_to "Reject", "/pet_applications/#{pet_app.id}?status=Rejected", method: :patch%>

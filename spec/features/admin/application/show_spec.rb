@@ -125,7 +125,7 @@ RSpec.describe 'The admin application show page' do
       
       expect(page).to_not have_content('Application Status: Pending')
       expect(page).to_not have_content('Application Status: Rejected')
-      expect(page).to have_content('Application Status: Approved')
+      expect(page).to have_content('Application Status: Accepted')
     end
 
     it "changes the application's status to 'Rejected' " do
@@ -134,36 +134,49 @@ RSpec.describe 'The admin application show page' do
       end
 
       expect(page).to_not have_content('Application Status: Pending')
-      expect(page).to_not have_content('Application Status: Approved')
+      expect(page).to_not have_content('Application Status: Accepted')
       expect(page).to have_content('Application Status: Rejected')
     end
   end
   
   describe 'Pets can only have one approved application on them at any time' do
     describe "'Pending' application with an adopted pet" do       
-      it 'displays a notice that the pet is adopted and a button to reject the pet' do 
+      before(:each)do
         visit "/admin/applications/#{@app3.id}"
         within("##{@pirate.id}") do
           click_button "Approve"
-          # save_and_open_page
-        end
-        visit "/admin/applications/#{@app1.id}"
-        # require 'pry';binding.pry
-        within("##{@pirate.id}") do
-          expect(page).to_not have_button("Approve")
-        
-          expect(page).to have_content("This pet is adopted")
-          expect(page).to have_button("Reject")
-        end
-
-        visit "/admin/applications/#{@app2.id}"
-        within("##{@pirate.id}") do
-          expect(page).to_not have_button("Approve")
-        
-          expect(page).to have_content("This pet is adopted")
-          expect(page).to have_button("Reject")
         end
       end
+      
+      it 'displays a notice that the pet is adopted and a button to reject the pet' do 
+                
+        within("##{@pirate.id}") do
+          expect(page).to_not have_button("Approve")
+          expect(page).to_not have_button("Reject")
+        end
+
+        visit "/admin/applications/#{@app1.id}"
+        within("##{@pirate.id}") do
+          expect(page).to_not have_button("Approve")
+        
+          expect(page).to have_content("This pet is adopted")
+          expect(page).to have_button("Reject")
+        end
+        
+        within("##{@lucille.id}") do
+          expect(page).to_not have_content("This pet is adopted")
+        
+          expect(page).to have_button("Approve")
+          expect(page).to have_button("Reject")
+        end
+        
+        within("##{@clawdia.id}") do
+          expect(page).to_not have_content("This pet is adopted")
+          
+          expect(page).to have_button("Approve")
+          expect(page).to have_button("Reject")
+        end   
+      end     
     end
   end
 end
