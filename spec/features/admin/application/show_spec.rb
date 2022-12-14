@@ -76,7 +76,7 @@ RSpec.describe 'The admin application show page' do
       expect(page).to have_content("Approved")
     end
 
-    visit "admin/applications/#{@app2.id}"
+    visit "/admin/applications/#{@app2.id}"
 
     within("##{@pirate.id}") do
       expect(page).to_not have_content("Approved")
@@ -84,4 +84,58 @@ RSpec.describe 'The admin application show page' do
       expect(page).to have_button("Reject")
     end
   end
+
+  describe 'when all pets on an application are approved or rejected' do
+    before(:each)do
+      visit "/admin/applications/#{@app2.id}"
+
+      within("##{@pirate.id}") do
+        click_button "Approve"
+      end
+      
+      within("##{@clawdia.id}") do
+        click_button "Approve"
+      end
+    end
+    
+    it 'returns the user to the admin application show page if approved' do
+      within("##{@lucille.id}") do
+        click_button "Approve"
+      end
+      
+      expect(current_path).to_not eq("/applications/#{@app2.id}")
+      expect(current_path).to eq("/admin/applications/#{@app2.id}")
+    end
+
+    it 'returns the user to the admin application show page if rejected' do
+      within("##{@lucille.id}") do
+        click_button "Reject"
+      end
+      
+      expect(current_path).to_not eq("/applications/#{@app2.id}")
+      expect(current_path).to eq("/admin/applications/#{@app2.id}")
+    end
+
+    it "changes the application's status to 'Approved' " do
+      within("##{@lucille.id}") do
+        click_button "Approve"
+      end
+      
+      expect(page).to_not have_content('Application Status: Pending')
+      expect(page).to_not have_content('Application Status: Rejected')
+      expect(page).to have_content('Application Status: Approved')
+    end
+
+    it "changes the application's status to 'Rejected' " do
+      within("##{@lucille.id}") do
+        click_button "Reject"
+      end
+
+      expect(page).to_not have_content('Application Status: Pending')
+      expect(page).to_not have_content('Application Status: Approved')
+      expect(page).to have_content('Application Status: Rejected')
+    end
+
+  end
+
 end

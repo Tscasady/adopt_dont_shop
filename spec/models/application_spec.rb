@@ -55,4 +55,40 @@ RSpec.describe Application, type: :model do
 
     expect(@new_app.status).to eq("In Progress")
   end
+
+  before(:each) do
+    @aurora = Shelter.create(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
+
+    @pirate = @aurora.pets.create(name: 'Mr. Pirate', breed: 'tuxedo shorthair', age: 5, adoptable: true)
+    @clawdia = @aurora.pets.create(name: 'Clawdia', breed: 'shorthair', age: 3, adoptable: true)
+    @lucille = @aurora.pets.create(name: 'Lucille Bald', breed: 'sphynx', age: 8, adoptable: true)
+
+    @app1 = Application.create!(name: "Tucker", street_address: "1122 Blank St.", city: 'New York City', state: "NY", zip_code: "12121", description: "We have one happy dog and would love another!", status: "Pending") 
+    @app2 = Application.create!(name: "Sara", street_address: "2211 Other St.", city: 'Iowa City', state: "IA", zip_code: "33434", description: "Give pet please", status: "Pending") 
+      
+    @petapp1 = PetApplication.create!(pet: @pirate, application: @app1, status: 'Approved')
+    @petapp2 = PetApplication.create!(pet: @clawdia, application: @app1, status: 'Approved')
+    @petapp3 = PetApplication.create!(pet: @lucille, application: @app1, status: 'Approved')
+    @petapp4 = PetApplication.create!(pet: @pirate, application: @app2, status: 'Approved')
+    @petapp5 = PetApplication.create!(pet: @clawdia, application: @app2, status: 'Approved')
+    @petapp6 = PetApplication.create!(pet: @lucille, application: @app2, status: 'Rejected')
+  end
+
+
+  it "returns the number of 'Approved' or 'Rejected' pet_applications related to an Application" do 
+    expect(@app1.app_status('Approved')).to_not eq(1)
+    expect(@app2.app_status('Approved')).to_not eq(3)    
+    
+    expect(@app1.app_status('Approved')).to eq(3)
+    expect(@app2.app_status('Approved')).to eq(2)
+
+
+    expect(@app1.app_status('Rejected')).to_not eq(1)
+    expect(@app2.app_status('Rejected')).to_not eq(0)    
+    
+    expect(@app1.app_status('Rejected')).to eq(0)
+    expect(@app2.app_status('Rejected')).to eq(1)
+  end
+
+
 end
