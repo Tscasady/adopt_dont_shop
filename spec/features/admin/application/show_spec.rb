@@ -120,8 +120,22 @@ RSpec.describe 'The admin application show page' do
       within("##{@lucille.id}") do
         click_button "Approve"
       end
-
+      
+      expect(page).to_not have_content('Application Status: Pending')
+      expect(page).to_not have_content('Application Status: Rejected')
+      expect(page).to have_content('Application Status: Approved')
     end
+
+    it "changes the application's status to 'Rejected' " do
+      within("##{@lucille.id}") do
+        click_button "Reject"
+      end
+
+      expect(page).to_not have_content('Application Status: Pending')
+      expect(page).to_not have_content('Application Status: Approved')
+      expect(page).to have_content('Application Status: Rejected')
+    end
+
   end
 
 end

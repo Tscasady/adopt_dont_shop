@@ -10,13 +10,13 @@ class ApplicationsController < ApplicationController
   end
 
   def create
-    @new_application = Application.create(app_params)
+    @new_application = Application.new(app_params)
     
     if @new_application.save
       flash.notice = 'Update Successful'
       redirect_to ("/applications/#{@new_application.id}")
     else
-      flash.notice = 'Unsuccessful - Please Try Again'
+      flash.notice = 'Unsuccessful - Please Try Again' #@new_application.errors.full_messages.to_sentence
       render :new
     end
   end
