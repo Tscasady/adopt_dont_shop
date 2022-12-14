@@ -7,4 +7,13 @@ class Application < ApplicationRecord
   validates_presence_of  :status, inclusion: ["In Progress","Pending","Accepted","Rejected" ]
   validates_numericality_of :zip_code
 
+  after_update :update_adoptable, if: :accepted
+
+  def update_adoptable
+    self.pets.each(&:adopted)
+  end
+
+  def accepted
+    self.status == "Accepted"
+  end
 end
